@@ -22,6 +22,7 @@ import { navigatePush } from './navigation/actions';
 class ProductList extends Component {
   constructor(props) {
     super(props);
+    this.renderRow = this.renderRow.bind(this);
   }
 
   getProducts() {
@@ -29,26 +30,29 @@ class ProductList extends Component {
   }
 
   renderRow(data) {
+    const { onButtonPress } = this.props;
     // data contains grouped data for one row, 
     // so we need to remap it into cells and pass to GridRow
     const cellViews = data.map((item) => {
       return (
-        <Card key={item.id} styleName="space-between">
-          <Image
-            styleName="medium-wide"
-            source={{uri: item.images[0].src}}
-          />
-          <View styleName="content">
-            <Subtitle>{item.name}</Subtitle>
-            <View styleName="horizontal v-center space-between">
-              <View styleName="horizontal">
-                <Subtitle styleName="md-gutter-right">{item.price}</Subtitle>
-                <Caption styleName="line-through">{item.sale_price}</Caption>
+        <TouchableOpacity key={item.id} onPress={() => onButtonPress(item)}>
+          <Card  styleName="space-between">
+            <Image
+              styleName="medium-wide"
+              source={{uri: item.images[0].src}}
+            />
+            <View styleName="content">
+              <Subtitle>{item.name}</Subtitle>
+              <View styleName="horizontal v-center space-between">
+                <View styleName="horizontal">
+                  <Subtitle styleName="md-gutter-right">{item.price}</Subtitle>
+                  <Caption styleName="line-through">{item.sale_price}</Caption>
+                </View>
+                <Button styleName="tight clear"><Icon name="cart" /></Button>
               </View>
-              <Button styleName="tight clear"><Icon name="cart" /></Button>
             </View>
-          </View>
-        </Card>
+          </Card>
+        </TouchableOpacity>
       );
     });
     return (
@@ -81,7 +85,7 @@ ProductList.propTypes = {
 
 const mapDispatchToProps = (dispatch) => ({
   onButtonPress: (product) => {
-    dispatch(navigatePush({ key: 'productDetails', title: 'Details' }, { product }));
+    dispatch(navigatePush({ key: 'ProductDetails', title: 'Details' }, { product }));
   },
 });
 
