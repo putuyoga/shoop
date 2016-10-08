@@ -12,6 +12,7 @@ import { navigatePop } from './navigation/actions';
 
 // Import page
 import ProductList from './ProductList';
+import ProductDetails from './ProductDetails';
 
 const {
 	Transitioner: NavigationTransitioner,
@@ -29,7 +30,11 @@ class App extends Component {
 
     switch(route.key) {
       case 'ProductList':
+        styles.navigationBar = 'container';
         return <ProductList />;
+      case 'ProductDetails':
+        styles.navigationBar = 'container';
+        return <ProductDetails {...route.props} />;
       default:
         return <ProductList />;
     }
