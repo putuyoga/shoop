@@ -59,11 +59,19 @@ class App extends Component {
               <NavigationBar
                 centerComponent={title}
                 leftComponent={
-                  props.scene.index === 0 ? null :
+                  props.scene.index === 0 ?
+                    <Button>
+                      <Icon name="sidebar" />
+                    </Button> :
                     <Button onPress={backAction}>
                       <Icon name="back" />
                     </Button>
-                }
+                } 
+                rightComponent={(
+                  <Button>
+                    <Icon name="cart" />
+                  </Button>
+                )}
               />
             </View>
           );
