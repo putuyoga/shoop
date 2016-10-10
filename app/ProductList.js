@@ -11,6 +11,7 @@ import {
   Screen,
   Icon,
   Text,
+  TextInput,
   Card,
   View,
   Caption,
@@ -34,6 +35,10 @@ class ProductList extends Component {
     // data contains grouped data for one row, 
     // so we need to remap it into cells and pass to GridRow
     const cellViews = data.map((item) => {
+      let salePrice = null;
+      if(item.sale_price.length > 0) {
+        salePrice = <Caption styleName="line-through">Rp. {item.sale_price}</Caption>;
+      }
       return (
         <TouchableOpacity key={item.id} onPress={() => onButtonPress(item)}>
           <Card  styleName="space-between">
@@ -45,8 +50,8 @@ class ProductList extends Component {
               <Subtitle>{item.name}</Subtitle>
               <View styleName="horizontal v-center space-between">
                 <View styleName="horizontal">
-                  <Subtitle styleName="md-gutter-right">{item.price}</Subtitle>
-                  <Caption styleName="line-through">{item.sale_price}</Caption>
+                  <Subtitle styleName="md-gutter-right">Rp. {item.price}</Subtitle>
+                  {salePrice}
                 </View>
                 <Button styleName="tight clear"><Icon name="cart" /></Button>
               </View>
@@ -67,8 +72,12 @@ class ProductList extends Component {
     const groupedData = GridRow.groupByRows(data, 2)
 
       return (
+        
         <ScrollView>
         <Screen style={{ marginTop: 70 }}>
+        <TextInput 
+            placeholder={'Search product'}
+          />
           <ListView
             data={groupedData}
             renderRow={this.renderRow}
