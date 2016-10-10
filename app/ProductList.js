@@ -45,17 +45,18 @@ class ProductList extends Component {
       let salePrice = null;
       let regPrice = null;
       if(item.sale_price.length > 0) {
-        salePrice = <Caption styleName="line-through" style={{color: '#c0392b'}}>{this.simplifyPrice(item.regular_price)}</Caption>;
-        regPrice = <Caption styleName="md-gutter-right">{this.simplifyPrice(item.sale_price)}</Caption>;
+        salePrice = <Caption styleName="md-gutter-right line-through" style={{backgroundColor: '#ecf0f1', color: '#999', padding: 5}}>{this.simplifyPrice(item.regular_price)}</Caption>;
+        regPrice = <Caption styleName="md-gutter-right" style={{backgroundColor: '#e74c3c', color: '#fff', padding: 5}}>{this.simplifyPrice(item.sale_price)}</Caption>;
       }
       else {
-        regPrice = <Caption styleName="md-gutter-right">{this.simplifyPrice(item.price)}</Caption>;
+        regPrice = <Caption styleName="md-gutter-right" style={{backgroundColor: '#ecf0f1', color: '#000', padding: 5}}>{this.simplifyPrice(item.price)}</Caption>;
       }
       return (
         <TouchableOpacity key={item.id} onPress={() => onButtonPress(item)}>
-          <Tile styleName="clear space-between">
+          <Tile styleName="clear space-between" style={{justifyContent: 'center',
+    alignItems: 'center'}}>
             <Image
-              styleName="medium-wide"
+              styleName="medium-square"
               source={{ uri: item.images[0].src }}
             />
             <View styleName="content ">
@@ -82,7 +83,7 @@ class ProductList extends Component {
 
       return (
         
-        <ScrollView>
+        <ScrollView style={{backgroundColor: '#fff'}}>
         <Screen style={{ marginTop: 70}}>
         <TextInput 
             placeholder={'Search product'}
