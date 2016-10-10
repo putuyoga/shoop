@@ -6,6 +6,7 @@ import {
   Button,
   Icon,
   View,
+  Screen
 } from '@shoutem/ui';
 import { connect } from 'react-redux';
 import { navigatePop } from './navigation/actions';
@@ -23,6 +24,19 @@ const {
 const styles = {
   navigationBar: 'container',
 };
+
+function NavBarStageContainer(props) {
+  return (
+    <View
+      {...props}
+      style={{
+        width: window.width,
+        height: 70,
+        ...props.style,
+      }}
+    />
+  );
+}
 
 class App extends Component {
   renderScene(props) {
@@ -56,23 +70,26 @@ class App extends Component {
                 renderScene={this.renderScene}
                 key={props.scene.route.key}
               />
-              <NavigationBar
-                centerComponent={title}
-                leftComponent={
-                  props.scene.index === 0 ?
+              <NavBarStageContainer style={{backgroundColor: '#2c3e50'}}>
+                <NavigationBar
+                  styleName="clear"
+                  centerComponent={title}
+                  leftComponent={
+                    props.scene.index === 0 ?
+                      <Button>
+                        <Icon name="sidebar" />
+                      </Button> :
+                      <Button onPress={backAction}>
+                        <Icon name="back" />
+                      </Button>
+                  } 
+                  rightComponent={(
                     <Button>
-                      <Icon name="sidebar" />
-                    </Button> :
-                    <Button onPress={backAction}>
-                      <Icon name="back" />
+                      <Icon name="cart" />
                     </Button>
-                } 
-                rightComponent={(
-                  <Button>
-                    <Icon name="cart" />
-                  </Button>
-                )}
-              />
+                  )}
+                />
+              </NavBarStageContainer>
             </View>
           );
         }}
