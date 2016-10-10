@@ -9,11 +9,12 @@ import {
   Screen
 } from '@shoutem/ui';
 import { connect } from 'react-redux';
-import { navigatePop } from './navigation/actions';
+import { navigatePop, navigatePush } from './navigation/actions';
 
 // Import page
 import ProductList from './ProductList';
 import ProductDetails from './ProductDetails';
+import Cart from './Cart';
 
 const {
 	Transitioner: NavigationTransitioner,
@@ -49,13 +50,16 @@ class App extends Component {
       case 'ProductDetails':
         styles.navigationBar = 'container';
         return <ProductDetails {...route.props} />;
+      case 'Cart':
+        styles.navigationBar = 'container';
+        return <Cart />;
       default:
         return <ProductList />;
     }
   }
 
   render() {
-    const { navigationState, backAction } = this.props;
+    const { onCartButtonPress, navigationState, backAction } = this.props;
 
     return (
       <NavigationTransitioner
@@ -70,7 +74,7 @@ class App extends Component {
                 renderScene={this.renderScene}
                 key={props.scene.route.key}
               />
-              <NavBarStageContainer style={{backgroundColor: '#2c3e50'}}>
+              <NavBarStageContainer style={{backgroundColor: '#6C7A89'}}>
                 <NavigationBar
                   styleName="clear"
                   centerComponent={title}
@@ -84,7 +88,8 @@ class App extends Component {
                       </Button>
                   } 
                   rightComponent={(
-                    <Button>
+                    props.scene.route.key === 'Cart' ? null :
+                    <Button onPress={() => onCartButtonPress()}>
                       <Icon name="cart" />
                     </Button>
                   )}
@@ -99,6 +104,7 @@ class App extends Component {
 }
 
 App.propTypes = {
+  onCartButtonPress: React.PropTypes.func.isRequired,
   backAction: React.PropTypes.func.isRequired,
   navigationState: React.PropTypes.object,
   scene: React.PropTypes.object
@@ -111,6 +117,9 @@ export default connect(
   dispatch => ({
     backAction: () => {
       dispatch(navigatePop());
+    },
+    onCartButtonPress: () => {
+      dispatch(navigatePush({ key: 'Cart', title: 'Cart' }))
     }
   })
 )(App);
