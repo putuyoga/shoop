@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import HtmlView from 'react-native-htmlview';
 import {
+  Overlay,
   ScrollView,
   Icon,
   Row,
@@ -13,43 +15,47 @@ import {
   Button,
   Tile,
   Screen,
+  RichMedia,
+  Caption
 } from '@shoutem/ui';
 
 export default class ProductDetails extends Component {
   render() {
     const { product } = this.props;
-
+    let salePrice = null;
+    let regPrice = null;
+    if(product.sale_price.length > 0) {
+      salePrice = <Caption styleName="line-through">Rp. {product.regular_price}</Caption>;
+      regPrice = <Heading styleName="md-gutter-center">Rp. {product.sale_price}</Heading>;
+    }
+    else {
+      regPrice = <Title styleName="md-gutter-center">Rp. {product.price}</Title>;
+    }
     return (
-      <Screen styleName="paper">
+      <Screen styleName="paper" style={{ marginTop: 70 }}>
         <ScrollView>
           <Image
-            animationName="hero"
-            styleName="large-portrait hero"
+            styleName="large-wide"
             source={{ uri: product.images[0].src }}
-            key={product.name}
           >
-            <Tile animationName="hero">
-              <Heading>{product.name}</Heading>
-              <Title>Rp. {product.price}</Title>
+            <Tile>
+              <Title styleName="md-gutter-bottom">{product.name}</Title>
+              {salePrice}
+              {regPrice}
             </Tile>
           </Image>
+          <Screen styleName="paper" style={{padding: 20, paddingBottom: 0}} >
+            <Subtitle>DESCRIPTION</Subtitle>
+            <HtmlView value={product.description} />
 
-          <Screen styleName="paper">
-            <Text styleName="md-gutter">{product.description}</Text>
-
-            <Divider styleName="line" />
-            <View styleName="horizontal flexible">
-              <Button styleName="full-width dark">
-                <Icon name="add-to-favorites-full" />
-                <Text>Reviews</Text>
-              </Button>
-              <Button styleName="full-width dark">
-                <Icon name="add-to-cart" />
-                <Text>Buy Product</Text>
-              </Button>
-            </View>
           </Screen>
         </ScrollView>
+        <View styleName="horizontal" style={{padding: 10}}>
+          <Button styleName="full-width dark">
+            <Icon name="add-to-cart" />
+            <Text>ADD TO CART</Text>
+          </Button>
+        </View>
       </Screen>
     );
   }
