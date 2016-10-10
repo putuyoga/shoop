@@ -24,10 +24,17 @@ class ProductList extends Component {
   constructor(props) {
     super(props);
     this.renderRow = this.renderRow.bind(this);
+    this.simplifyPrice = this.simplifyPrice.bind(this);
   }
 
   getProducts() {
     return require('../assets/data/products.json');
+  }
+
+  simplifyPrice(price) {
+    var price = parseFloat(price);
+    price /= 1000;
+    return 'Rp. ' + price + 'rb';
   }
 
   renderRow(data) {
@@ -36,27 +43,29 @@ class ProductList extends Component {
     // so we need to remap it into cells and pass to GridRow
     const cellViews = data.map((item) => {
       let salePrice = null;
+      let regPrice = null;
       if(item.sale_price.length > 0) {
-        salePrice = <Caption styleName="line-through">Rp. {item.sale_price}</Caption>;
+        salePrice = <Caption styleName="line-through" style={{color: '#c0392b'}}>{this.simplifyPrice(item.regular_price)}</Caption>;
+        regPrice = <Caption styleName="md-gutter-right">{this.simplifyPrice(item.sale_price)}</Caption>;
+      }
+      else {
+        regPrice = <Caption styleName="md-gutter-right">{this.simplifyPrice(item.price)}</Caption>;
       }
       return (
         <TouchableOpacity key={item.id} onPress={() => onButtonPress(item)}>
-          <Card  styleName="space-between">
+          <Tile styleName="clear space-between">
             <Image
               styleName="medium-wide"
-              source={{uri: item.images[0].src}}
+              source={{ uri: item.images[0].src }}
             />
-            <View styleName="content">
-              <Subtitle>{item.name}</Subtitle>
-              <View styleName="horizontal v-center space-between">
-                <View styleName="horizontal">
-                  <Subtitle styleName="md-gutter-right">Rp. {item.price}</Subtitle>
-                  {salePrice}
-                </View>
-                <Button styleName="tight clear"><Icon name="cart" /></Button>
+            <View styleName="content ">
+              <Subtitle numberOfLines={1}>{item.name}</Subtitle>
+              <View styleName="horizontal">
+                {regPrice}
+                {salePrice} 
               </View>
             </View>
-          </Card>
+          </Tile>
         </TouchableOpacity>
       );
     });
@@ -74,7 +83,7 @@ class ProductList extends Component {
       return (
         
         <ScrollView>
-        <Screen style={{ marginTop: 70 }}>
+        <Screen style={{ marginTop: 70}}>
         <TextInput 
             placeholder={'Search product'}
           />
