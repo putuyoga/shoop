@@ -3,12 +3,14 @@ import {
   ScrollView,
   Icon,
   Row,
+  Heading,
   Subtitle,
   Text,
   Title,
   View,
   Image,
   Divider,
+  Button,
   Tile,
   Screen,
 } from '@shoutem/ui';
@@ -27,8 +29,8 @@ export default class ProductDetails extends Component {
             key={product.name}
           >
             <Tile animationName="hero">
-              <Title>{product.name}</Title>
-              <Subtitle>{product.price}</Subtitle>
+              <Heading>{product.name}</Heading>
+              <Title>Rp. {product.price}</Title>
             </Tile>
           </Image>
 
@@ -36,38 +38,16 @@ export default class ProductDetails extends Component {
             <Text styleName="md-gutter">{product.description}</Text>
 
             <Divider styleName="line" />
-
-            <Row>
-              <Icon name="laptop" />
-              <View styleName="vertical">
-                <Subtitle>Visit webpage</Subtitle>
-                <Text>{product.url}</Text>
-              </View>
-              <Icon name="right-arrow" />
-            </Row>
-
-            <Divider styleName="line" />
-
-            <Row>
-              <Icon name="pin" />
-              <View styleName="vertical">
-                <Subtitle>Address</Subtitle>
-                <Text>{product.address}</Text>
-              </View>
-              <Icon name="right-arrow" />
-            </Row>
-
-            <Divider styleName="line" />
-
-            <Row>
-              <Icon name="email" />
-              <View styleName="vertical">
-                <Subtitle>Email</Subtitle>
-                <Text>{product.mail}</Text>
-              </View>
-            </Row>
-
-            <Divider styleName="line" />
+            <View styleName="horizontal flexible">
+              <Button styleName="full-width dark">
+                <Icon name="add-to-favorites-full" />
+                <Text>Reviews</Text>
+              </Button>
+              <Button styleName="full-width dark">
+                <Icon name="add-to-cart" />
+                <Text>Buy Product</Text>
+              </Button>
+            </View>
           </Screen>
         </ScrollView>
       </Screen>
