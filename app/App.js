@@ -13,12 +13,20 @@ import Drawer from 'react-native-drawer';
 import { connect } from 'react-redux';
 import { navigatePop, navigatePush } from './navigation/actions';
 
-
 // Import page
-import ProductList from './ProductList';
-import ProductDetails from './ProductDetails';
-import Cart from './Cart';
-import Sidebar from './Sidebar';
+import {
+  ProductList,
+  ProductDetails,
+  Cart,
+  Login,
+  Register,
+  ForgotPassword
+} from './pages';
+
+// import components
+import {
+  Sidebar
+} from './components';
 
 const {
 	Transitioner: NavigationTransitioner,
@@ -54,6 +62,15 @@ class App extends Component {
       case 'ProductDetails':
         styles.navigationBar = 'container';
         return <ProductDetails {...route.props} />;
+      case 'Login':
+        styles.navigationBar = 'container';
+        return <Login />;
+      case 'Register':
+        styles.navigationBar = 'container';
+        return <Register />;
+      case 'ForgotPassword':
+        styles.navigationBar = 'container';
+        return <ForgotPassword />;
       case 'Cart':
         styles.navigationBar = 'container';
         return <Cart />;
@@ -71,7 +88,7 @@ class App extends Component {
   };
 
   render() {
-    const { onCartButtonPress, navigationState, backAction } = this.props;
+    const { onCartButtonPress, sidebarMenu, navigationState, backAction } = this.props;
     return (
       <NavigationTransitioner
         navigationState={navigationState}
@@ -82,7 +99,7 @@ class App extends Component {
             <Drawer
               type="overlay"
               ref={(ref) => this._drawer = ref}
-              content={<Sidebar />}
+              content={<Sidebar {...sidebarMenu} />}
               panCloseMask={0.2}
               closedDrawerOffset={-3}
               openDrawerOffset={0.2}
@@ -94,7 +111,7 @@ class App extends Component {
                   renderScene={this.renderScene}
                   key={props.scene.route.key}
                 />
-                <NavBarStageContainer style={{backgroundColor: '#6C7A89'}}>
+                <NavBarStageContainer style={{backgroundColor: '#000000'}}>
                   <NavigationBar
                     styleName="clear"
                     centerComponent={title}
@@ -126,6 +143,7 @@ class App extends Component {
 
 App.propTypes = {
   onCartButtonPress: React.PropTypes.func.isRequired,
+  sidebarMenu: React.PropTypes.object.isRequired,
   backAction: React.PropTypes.func.isRequired,
   navigationState: React.PropTypes.object,
   scene: React.PropTypes.object
@@ -141,6 +159,17 @@ export default connect(
     },
     onCartButtonPress: () => {
       dispatch(navigatePush({ key: 'Cart', title: 'Cart' }))
+    },
+    sidebarMenu: {
+      onMembershipButtonPress: () => {
+        dispatch(navigatePush({ key: 'Login', title: 'Login' }))
+      },
+      onRecentOrderButtonPress: () => {
+        dispatch(navigatePush({ key: 'RecentOrders', title: 'Recent Orders'}))
+      },
+      onAboutButtonPress: () => {
+        dispatch(navigatePush({ key: 'About', title: 'About'}))
+      }
     }
   })
 )(App);
